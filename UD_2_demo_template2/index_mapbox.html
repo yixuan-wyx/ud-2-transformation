@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIC-IBZ Transformation Interactive Demo</title>
+    <!-- Include Tailwind CSS from CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Mapbox GL JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    
+    <style>
+        .map {
+            width: 100%;
+            height: 250px;
+            border-radius: 0.375rem;
+        }
+        
+        .map-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 4px;
+            z-index: 1;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div id="app" class="flex flex-col h-screen">
+        <!-- Header -->
+        <div class="bg-blue-800 text-white p-4">
+            <h1 class="text-2xl font-bold">LIC-IBZ Transformation Interactive Demo</h1>
+            <p class="text-sm">Explore the impact of our proposed interventions</p>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Left Panel - Controls -->
+            <div class="w-64 bg-white p-4 border-r shadow-md">
+                <h2 class="text-lg font-semibold mb-4">Interventions</h2>
+                
+                <!-- Intervention Selection -->
+                <div class="mb-6">
+                    <div class="flex flex-col space-y-2">
+                        <button 
+                            id="street-btn"
+                            class="p-2 text-left rounded bg-blue-600 text-white"
+                            onclick="setActiveIntervention('street')"
+                        >
+                            1. Active Street Frontage
+                        </button>
+                        <button 
+                            id="publicSpace-btn"
+                            class="p-2 text-left rounded bg-gray-200"
+                            onclick="setActiveIntervention('publicSpace')"
+                        >
+                            2. Public Space Network
+                        </button>
+                        <button 
+                            id="campus-btn"
+                            class="p-2 text-left rounded bg-gray-200"
+                            onclick="setActiveIntervention('campus')"
+                        >
+                            3. Campus-Industry Corridor
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Implementation Slider -->
+                <div class="mb-6">
+                    <h3 class="text-md font-medium mb-2">Implementation Level</h3>
+                    <input 
+                        type="range" 
+                        id="implementation-slider"
+                        min="0" 
+                        max="100" 
+                        value="50" 
+                        oninput="updateImplementationLevel(this.value)"
+                        class="w-full"
+                    />
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>Current State</span>
+                        <span id="implementation-value">50%</span>
+                        <span>Full Implementation</span>
+                    </div>
+                </div>
+                
+                <!-- Metrics Display -->
+                <div>
+                    <h3 class="text-md font-medium mb-2">Impact Metrics</h3>
+                    <div id="metrics-container" class="space-y-2">
+                        <!-- Metrics will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Visualization -->
+            <div class="flex-1 p-6 overflow-auto">
+                <h2 id="intervention-title" class="text-xl font-bold mb-2">Active Street Frontage Transformation</h2>
+                <p id="intervention-description" class="text-gray-600 mb-4">Converting industrial facades to transparent, interactive street frontages</p>
+                
+                <!-- Map Visualization -->
+                <div class="map-container mb-6">
+                    <div id="map" class="map"></div>
+                    <div id="map-overlay" class="map-overlay">
+                        Implementation: <span id="map-implementation">50%</span>
+                    </div>
+                </div>
+                
+                <!-- Before/After Visualization -->
+                <div class="flex mb-6 space-x-4">
+                    <div class="w-1/2">
+                        <h3 class="text-lg font-medium mb-2">Current State</h3>
+                        <div class="bg-gray-200 h-64 rounded flex items-center justify-center overflow-hidden">
+                            <img id="before-image" src="placeholder-before.jpg" alt="Before" class="max-h-full object-cover w-full">
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <h3 class="text-lg font-medium mb-2">
+                            Transformed (<span id="transform-level">50</span>% Implementation)
+                        </h3>
+                        <div class="bg-gray-200 h-64 rounded flex items-center justify-center overflow-hidden">
+                            <img id="after-image" src="placeholder-after.jpg" alt="After" class="max-h-full object-cover w-full">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Actions -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-2">Key Implementation Actions</h3>
+                    <ul id="actions-list" class="list-disc pl-5">
+                        <!-- Actions will be inserted here by JavaScript -->
+                    </ul>
+                </div>
+                
+                <!-- Additional Impacts -->
+                <div>
+                    <h3 class="text-lg font-medium mb-2">Additional Impacts</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="border rounded p-3">
+                            <h4 class="font-medium">Economic</h4>
+                            <p id="economic-impact" class="text-sm">
+                                Moderate increase in business activity and foot traffic.
+                            </p>
+                        </div>
+                        <div class="border rounded p-3">
+                            <h4 class="font-medium">Community</h4>
+                            <p id="community-impact" class="text-sm">
+                                Growing sense of place and community ownership.
+                            </p>
+                        </div>
+                        <div class="border rounded p-3">
+                            <h4 class="font-medium">Environmental</h4>
+                            <p id="environmental-impact" class="text-sm">
+                                Modest increase in green space and reduced heat island effect.
+                            </p>
+                        </div>
+                        <div class="border rounded p-3">
+                            <h4 class="font-medium">Accessibility</h4>
+                            <p id="accessibility-impact" class="text-sm">
+                                Enhanced accessibility for diverse user groups.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mapbox token - Replace with your own token from mapbox.com
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZXVzZXIiLCJhIjoiY2xobzFkamM5MGkycDNlcGRpeDBhOWdnayJ9.ZP4gr3SJiJ3WS9QOkZmwPw';
+        
+        // Initialize map
+        let map;
+        
+        // Center on Long Island City, Queens, NY
+        const licCoordinates = [-73.9400, 40.7450];
+        
+        // Data for interventions
+        const interventionData = {
+            street: {
+                title: "Active Street Frontage Transformation",
+                description: "Converting industrial facades to transparent, interactive street frontages",
+                beforeImage: "placeholder-before.jpg", // Replace with your image
+                afterImage: "placeholder-after.jpg",   // Replace with your image
+                mapStyle: "mapbox://styles/mapbox/light-v11",
+                center: licCoordinates,
+                zoom: 15.5,
+                // GeoJSON for active street frontages
+                geojson: {
+                    type: 'FeatureCollection',
+                    features: [
+                        // Replace with your actual street frontage locations
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Main Street Facade Improvements',
+                                type: 'frontage'
+                            },
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [-73.9400, 40.7450],
+                                    [-73.9380, 40.7455]
+                                ]
+                            }
+                        },
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Secondary Street Facade Improvements',
+                                type: 'frontage'
+                            },
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [-73.9390, 40.7430],
+                                    [-73.9370, 40.7435]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                metrics: [
+                    { name: "Pedestrian Activity", baseValue: 25 },
+                    { name: "Economic Activity", baseValue: 30 },
+                    { name: "Community Engagement", baseValue: 20 }
+                ],
+                actions: [
+                    "Convert 40-60% of ground floor facades to transparent materials",
+                    "Create 'shop-front factory' spaces showing production",
+                    "Add secondary entrances along primary pedestrian routes",
+                    "Implement awnings, signage, and lighting for pedestrian experience"
+                ]
+            },
+            publicSpace: {
+                title: "Public Space Network Development",
+                description: "Creating interconnected public spaces for workers and visitors",
+                beforeImage: "placeholder-before.jpg", // Replace with your image
+                afterImage: "placeholder-after.jpg",   // Replace with your image
+                mapStyle: "mapbox://styles/mapbox/light-v11",
+                center: licCoordinates,
+                zoom: 15,
+                // GeoJSON for public spaces
+                geojson: {
+                    type: 'FeatureCollection',
+                    features: [
+                        // Replace with your actual public space locations
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Small Plaza Development',
+                                type: 'plaza'
+                            },
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-73.9405, 40.7440]
+                            }
+                        },
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Linear Parklet',
+                                type: 'parklet'
+                            },
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [-73.9390, 40.7460],
+                                    [-73.9370, 40.7465]
+                                ]
+                            }
+                        },
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Intersection Treatment',
+                                type: 'intersection'
+                            },
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-73.9395, 40.7455]
+                            }
+                        }
+                    ]
+                },
+                metrics: [
+                    { name: "Green Space", baseValue: 15 },
+                    { name: "Social Gathering", baseValue: 20 },
+                    { name: "Accessibility", baseValue: 25 }
+                ],
+                actions: [
+                    "Develop small plazas in underutilized spaces",
+                    "Create linear parklets along streets",
+                    "Implement intersection treatments for safety and placemaking",
+                    "Add seating options for workers and visitors"
+                ]
+            },
+            campus: {
+                title: "Multi-Purpose Campus-Industry Corridor",
+                description: "Creating connections between educational and industrial spaces",
+                beforeImage: "placeholder-before.jpg", // Replace with your image
+                afterImage: "placeholder-after.jpg",   // Replace with your image
+                mapStyle: "mapbox://styles/mapbox/light-v11",
+                center: licCoordinates,
+                zoom: 14.5,
+                // GeoJSON for campus-industry corridor
+                geojson: {
+                    type: 'FeatureCollection',
+                    features: [
+                        // Replace with your actual corridor locations
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Pedestrian Pathway',
+                                type: 'pathway'
+                            },
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [-73.9410, 40.7470],
+                                    [-73.9390, 40.7460],
+                                    [-73.9380, 40.7445]
+                                ]
+                            }
+                        },
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Outdoor Learning Space',
+                                type: 'learning'
+                            },
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-73.9400, 40.7465]
+                            }
+                        },
+                        {
+                            type: 'Feature',
+                            properties: {
+                                description: 'Showcase Area',
+                                type: 'showcase'
+                            },
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-73.9385, 40.7455]
+                            }
+                        }
+                    ]
+                },
+                metrics: [
+                    { name: "Collaboration", baseValue: 10 },
+                    { name: "Amenity Usage", baseValue: 15 },
+                    { name: "Educational Engagement", baseValue: 20 }
+                ],
+                actions: [
+                    "Create pedestrian-friendly pathway improvements",
+                    "Develop flexible outdoor learning/gathering spaces",
+                    "Implement dual-purpose amenities (food, seating, Wi-Fi)",
+                    "Create showcase areas for industrial processes and student work"
+                ]
+            }
+        };
+        
+        // Variables to track current state
+        let activeIntervention = 'street';
+        let implementationLevel = 50;
+        
+        // Function to initialize the map
+        function initMap() {
+            const data = interventionData[activeIntervention];
+            
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: data.mapStyle,
+                center: data.center,
+                zoom: data.zoom,
+                interactive: true
+            });
+            
+            map.on('load', () => {
+                updateMapLayers();
+            });
+        }
+        
+        // Function to update map layers based on active intervention and implementation level
+        function updateMapLayers() {
+            const data = interventionData[activeIntervention];
+            
+            // Clear existing layers
+            if (map.getLayer('intervention-layer')) map.removeLayer('intervention-layer');
+            if (map.getLayer('intervention-layer-line')) map.removeLayer('intervention-layer-line');
+            if (map.getLayer('intervention-layer-circle')) map.removeLayer('intervention-layer-circle');
+            if (map.getSource('intervention-data')) map.removeSource('intervention-data');
+            
+            // Add new source and layers
+            map.addSource('intervention-data', {
+                type: 'geojson',
+                data: data.geojson
+            });
+            
+            // Add layers based on feature types
+            
+            // Line features (streets, pathways, etc.)
+            map.addLayer({
+                id: 'intervention-layer-line',
+                type: 'line',
+                source: 'intervention-data',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round',
+                    'visibility': 'visible'
+                },
+                paint: {
+                    'line-color': [
+                        'match',
+                        ['get', 'type'],
+                        'frontage', '#FF6B6B',
+                        'parklet', '#4ECB71',
+                        'pathway', '#4A6DF2',
+                        '#888888'
+                    ],
+                    'line-width': Math.max(2, (implementationLevel / 20)),
+                    'line-opacity': Math.min(0.1 + (implementationLevel / 100), 0.9)
+                },
+                filter: ['==', ['geometry-type'], 'LineString']
+            });
+            
+            // Point features (plazas, learning spaces, etc.)
+            map.addLayer({
+                id: 'intervention-layer-circle',
+                type: 'circle',
+                source: 'intervention-data',
+                paint: {
+                    'circle-radius': Math.max(5, (implementationLevel / 10)),
+                    'circle-color': [
+                        'match',
+                        ['get', 'type'],
+                        'plaza', '#4ECB71',
+                        'intersection', '#F7C244',
+                        'learning', '#4A6DF2',
+                        'showcase', '#9B51E0',
+                        '#888888'
+                    ],
+                    'circle-opacity': Math.min(0.1 + (implementationLevel / 100), 0.9)
+                },
+                filter: ['==', ['geometry-type'], 'Point']
+            });
+            
+            // Add popup on hover
+            const popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+            
+            map.on('mouseenter', 'intervention-layer-circle', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+                
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const description = e.features[0].properties.description;
+                
+                popup.setLngLat(coordinates)
+                    .setHTML(`<strong>${description}</strong><br>Implementation: ${implementationLevel}%`)
+                    .addTo(map);
+            });
+            
+            map.on('mouseleave', 'intervention-layer-circle', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+            
+            map.on('mouseenter', 'intervention-layer-line', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+                
+                const coordinates = e.lngLat;
+                const description = e.features[0].properties.description;
+                
+                popup.setLngLat(coordinates)
+                    .setHTML(`<strong>${description}</strong><br>Implementation: ${implementationLevel}%`)
+                    .addTo(map);
+            });
+            
+            map.on('mouseleave', 'intervention-layer-line', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+        }
+        
+        // Function to set active intervention
+        function setActiveIntervention(intervention) {
+            activeIntervention = intervention;
+            
+            // Update buttons
+            document.querySelectorAll('[id$="-btn"]').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-black');
+            });
+            document.getElementById(`${intervention}-btn`).classList.remove('bg-gray-200', 'text-black');
+            document.getElementById(`${intervention}-btn`).classList.add('bg-blue-600', 'text-white');
+            
+            // Update map
+            const data = interventionData[intervention];
+            map.setStyle(data.mapStyle);
+            map.setCenter(data.center);
+            map.setZoom(data.zoom);
+            
+            // Need to wait for style to load before adding layers
+            map.once('style.load', () => {
+                updateMapLayers();
+            });
+            
+            // Update content
+            updateContent();
+        }
+        
+        // Function to update implementation level
+        function updateImplementationLevel(level) {
+            implementationLevel = parseInt(level);
+            document.getElementById('implementation-value').textContent = `${implementationLevel}%`;
+            document.getElementById('transform-level').textContent = implementationLevel;
+            document.getElementById('map-implementation').textContent = `${implementationLevel}%`;
+            
+            // Update map visualization based on implementation level
+            if (map.isStyleLoaded()) {
+                updateMapLayers();
+            }
+            
+            // Update metrics and impacts
+            updateMetrics();
+            updateImpacts();
+        }
+        
+        // Function to update content based on active intervention
+        function updateContent() {
+            const data = interventionData[activeIntervention];
+            
+            // Update title and description
+            document.getElementById('intervention-title').textContent = data.title;
+            document.getElementById('intervention-description').textContent = data.description;
+            
+            // Update images
+            document.getElementById('before-image').src = data.beforeImage;
+            document.getElementById('after-image').src = data.afterImage;
+            
+            // Update actions list
+            const actionsList = document.getElementById('actions-list');
+            actionsList.innerHTML = '';
+            data.actions.forEach((action, index) => {
+                const li = document.createElement('li');
+                li.className = 'mb-1';
+                
+                const actionText = document.createTextNode(action);
+                li.appendChild(actionText);
+                
+                if (implementationLevel > 0) {
+                    const span = document.createElement('span');
+                    span.className = 'ml-2 text-sm text-blue-600';
+                    const completionLevel = Math.min(100, Math.max(0, implementationLevel - index * 20));
+                    span.textContent = `${completionLevel}% complete`;
+                    li.appendChild(span);
+                }
+                
+                actionsList.appendChild(li);
+            });
+            
+            // Update metrics
+            updateMetrics();
+            
+            // Update impact descriptions
+            updateImpacts();
+        }
+        
+        // Function to update metrics
+        function updateMetrics() {
+            const data = interventionData[activeIntervention];
+            const metricsContainer = document.getElementById('metrics-container');
+            metricsContainer.innerHTML = '';
+            
+            data.metrics.forEach(metric => {
+                // Calculate current value based on implementation level
+                const currentValue = metric.baseValue + (metric.baseValue * implementationLevel / 100);
+                
+                // Create metric display
+                const metricDiv = document.createElement('div');
+                
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'flex justify-between text-sm';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = metric.name;
+                
+                const valueSpan = document.createElement('span');
+                valueSpan.textContent = currentValue.toFixed(1);
+                
+                labelDiv.appendChild(nameSpan);
+                labelDiv.appendChild(valueSpan);
+                
+                const barBg = document.createElement('div');
+                barBg.className = 'w-full bg-gray-200 rounded-full h-2.5';
+                
+                const barFill = document.createElement('div');
+                barFill.className = 'bg-blue-600 h-2.5 rounded-full';
+                barFill.style.width = `${currentValue}%`;
+                
+                barBg.appendChild(barFill);
+                
+                metricDiv.appendChild(labelDiv);
+                metricDiv.appendChild(barBg);
+                metricsContainer.appendChild(metricDiv);
+            });
+        }
+        
+        // Function to update impact descriptions
+        function updateImpacts() {
+            // Economic impact
+            const economicImpact = document.getElementById('economic-impact');
+            if (implementationLevel < 30) {
+                economicImpact.textContent = "Minimal economic impact with current implementation level.";
+            } else if (implementationLevel < 70) {
+                economicImpact.textContent = "Moderate increase in business activity and foot traffic.";
+            } else {
+                economicImpact.textContent = "Significant economic revitalization and new business opportunities.";
+            }
+            
+            // Community impact
+            const communityImpact = document.getElementById('community-impact');
+            if (implementationLevel < 30) {
+                communityImpact.textContent = "Limited community engagement with current implementation.";
+            } else if (implementationLevel < 70) {
+                communityImpact.textContent = "Growing sense of place and community ownership.";
+            } else {
+                communityImpact.textContent = "Thriving community hub with strong local identity.";
+            }
+            
+            // Environmental impact
+            const environmentalImpact = document.getElementById('environmental-impact');
+            if (implementationLevel < 30) {
+                environmentalImpact.textContent = "Minimal environmental improvements.";
+            } else if (implementationLevel < 70) {
+                environmentalImpact.textContent = "Modest increase in green space and reduced heat island effect.";
+            } else {
+                environmentalImpact.textContent = "Significant environmental benefits and increased sustainability.";
+            }
+            
+            // Accessibility impact
+            const accessibilityImpact = document.getElementById('accessibility-impact');
+            if (implementationLevel < 30) {
+                accessibilityImpact.textContent = "Basic accessibility improvements.";
+            } else if (implementationLevel < 70) {
+                accessibilityImpact.textContent = "Enhanced accessibility for diverse user groups.";
+            } else {
+                accessibilityImpact.textContent = "Universal accessibility throughout the district.";
+            }
+        }
+        
+        // Initialize the app
+        function init() {
+            initMap();
+            updateContent();
+        }
+        
+        // Call init when the page loads
+        window.onload = init;
+    </script>
+</body>
+</html>

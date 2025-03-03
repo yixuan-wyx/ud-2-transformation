@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIC-IBZ Transformation Interactive Demo</title>
+    
+    <!-- External Libraries -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="container-fluid vh-100 d-flex flex-column">
+        <!-- Header -->
+        <header class="bg-primary text-white p-3">
+            <h1 class="mb-0">LIC-IBZ Transformation Interactive Demo</h1>
+            <p class="mb-0">Explore the impact of our proposed interventions</p>
+        </header>
+        
+        <div class="row flex-grow-1">
+            <!-- Control Panel -->
+            <div class="col-md-3 bg-light p-3">
+                <h2 class="h4 mb-4">Interventions</h2>
+                
+                <!-- Intervention Tabs -->
+                <ul class="nav nav-pills mb-4" id="intervention-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="street-tab" data-bs-toggle="pill" 
+                                data-bs-target="#street-content" type="button" role="tab" 
+                                aria-controls="street-content" aria-selected="true">
+                            Street Frontage
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="publicspace-tab" data-bs-toggle="pill" 
+                                data-bs-target="#publicspace-content" type="button" role="tab" 
+                                aria-controls="publicspace-content" aria-selected="false">
+                            Public Space
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="campus-tab" data-bs-toggle="pill" 
+                                data-bs-target="#campus-content" type="button" role="tab" 
+                                aria-controls="campus-content" aria-selected="false">
+                            Campus-Industry
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Parameters Section - Content changes based on active intervention -->
+                <div class="parameters-container mb-4">
+                    <h3 class="h5 mb-3">Adjust Parameters</h3>
+                    <div id="parameters-content"></div>
+                </div>
+                
+                <!-- Implementation Level Control -->
+                <div class="implementation-container mb-4">
+                    <h3 class="h5 mb-3">Overall Implementation</h3>
+                    <label for="implementation-slider" class="form-label">
+                        Level: <span id="implementation-value">50%</span>
+                    </label>
+                    <input type="range" class="form-range" id="implementation-slider" 
+                           min="0" max="100" value="50">
+                    <div class="d-flex justify-content-between small text-muted">
+                        <span>Current State</span>
+                        <span>Full Implementation</span>
+                    </div>
+                </div>
+                
+                <!-- Impact Metrics -->
+                <div class="metrics-container">
+                    <h3 class="h5 mb-3">Impact Metrics</h3>
+                    <div id="metrics-content" class="metrics-list"></div>
+                </div>
+            </div>
+            
+            <!-- Main Visualization Area -->
+            <div class="col-md-9 p-0">
+                <div class="tab-content h-100" id="intervention-tab-content">
+                    <!-- Street Frontage Tab -->
+                    <div class="tab-pane fade show active h-100" id="street-content" role="tabpanel" 
+                         aria-labelledby="street-tab">
+                        <div class="visualization-container h-100 d-flex flex-column">
+                            <!-- Map View -->
+                            <div class="map-container position-relative">
+                                <div id="street-map" class="map"></div>
+                                <div class="map-overlay-controls">
+                                    <button class="btn btn-sm btn-light" id="street-map-reset">Reset View</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Before/After Comparison -->
+                            <div class="comparison-container d-flex">
+                                <div class="before-container">
+                                    <h3 class="h5">Current State</h3>
+                                    <div class="image-container">
+                                        <img src="img/before/street.jpg" alt="Current street condition" id="street-before">
+                                    </div>
+                                </div>
+                                <div class="after-container">
+                                    <h3 class="h5">Transformed (<span class="implementation-level">50</span>%)</h3>
+                                    <div class="image-container">
+                                        <img src="img/after/street.jpg" alt="Transformed street" id="street-after">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Impact Analysis -->
+                            <div class="impact-analysis">
+                                <h3 class="h5 mb-3">Impact Analysis</h3>
+                                <div class="row row-cols-2 g-3">
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Economic</h5>
+                                                <p class="card-text" id="street-economic-impact">
+                                                    Moderate increase in business activity and foot traffic.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Social</h5>
+                                                <p class="card-text" id="street-social-impact">
+                                                    Enhanced street life and pedestrian activity.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Environmental</h5>
+                                                <p class="card-text" id="street-environmental-impact">
+                                                    Improved microclimate through street-level amenities.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Accessibility</h5>
+                                                <p class="card-text" id="street-accessibility-impact">
+                                                    Enhanced wayfinding and street-level accessibility.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Public Space Tab -->
+                    <div class="tab-pane fade h-100" id="publicspace-content" role="tabpanel" 
+                         aria-labelledby="publicspace-tab">
+                        <div class="visualization-container h-100 d-flex flex-column">
+                            <!-- Map View -->
+                            <div class="map-container position-relative">
+                                <div id="publicspace-map" class="map"></div>
+                                <div class="map-overlay-controls">
+                                    <button class="btn btn-sm btn-light" id="publicspace-map-reset">Reset View</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Before/After Comparison -->
+                            <div class="comparison-container d-flex">
+                                <div class="before-container">
+                                    <h3 class="h5">Current State</h3>
+                                    <div class="image-container">
+                                        <img src="img/before/publicspace.jpg" alt="Current public space" id="publicspace-before">
+                                    </div>
+                                </div>
+                                <div class="after-container">
+                                    <h3 class="h5">Transformed (<span class="implementation-level">50</span>%)</h3>
+                                    <div class="image-container">
+                                        <img src="img/after/publicspace.jpg" alt="Transformed public space" id="publicspace-after">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Impact Analysis -->
+                            <div class="impact-analysis">
+                                <h3 class="h5 mb-3">Impact Analysis</h3>
+                                <div class="row row-cols-2 g-3">
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Economic</h5>
+                                                <p class="card-text" id="publicspace-economic-impact">
+                                                    Increased property values near public spaces.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Social</h5>
+                                                <p class="card-text" id="publicspace-social-impact">
+                                                    Enhanced community gathering opportunities.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Environmental</h5>
+                                                <p class="card-text" id="publicspace-environmental-impact">
+                                                    Increased green space and reduced heat island effect.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Accessibility</h5>
+                                                <p class="card-text" id="publicspace-accessibility-impact">
+                                                    Improved access to quality outdoor spaces.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Campus Corridor Tab -->
+                    <div class="tab-pane fade h-100" id="campus-content" role="tabpanel" 
+                         aria-labelledby="campus-tab">
+                        <div class="visualization-container h-100 d-flex flex-column">
+                            <!-- Map View -->
+                            <div class="map-container position-relative">
+                                <div id="campus-map" class="map"></div>
+                                <div class="map-overlay-controls">
+                                    <button class="btn btn-sm btn-light" id="campus-map-reset">Reset View</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Before/After Comparison -->
+                            <div class="comparison-container d-flex">
+                                <div class="before-container">
+                                    <h3 class="h5">Current State</h3>
+                                    <div class="image-container">
+                                        <img src="img/before/campus.jpg" alt="Current campus corridor" id="campus-before">
+                                    </div>
+                                </div>
+                                <div class="after-container">
+                                    <h3 class="h5">Transformed (<span class="implementation-level">50</span>%)</h3>
+                                    <div class="image-container">
+                                        <img src="img/after/campus.jpg" alt="Transformed campus corridor" id="campus-after">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Impact Analysis -->
+                            <div class="impact-analysis">
+                                <h3 class="h5 mb-3">Impact Analysis</h3>
+                                <div class="row row-cols-2 g-3">
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Economic</h5>
+                                                <p class="card-text" id="campus-economic-impact">
+                                                    Increased innovation and job creation opportunities.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Social</h5>
+                                                <p class="card-text" id="campus-social-impact">
+                                                    Enhanced interaction between students and industry.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Environmental</h5>
+                                                <p class="card-text" id="campus-environmental-impact">
+                                                    Green corridor connecting educational and industrial spaces.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Accessibility</h5>
+                                                <p class="card-text" id="campus-accessibility-impact">
+                                                    Improved pedestrian and bicycle connections.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Application Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/interventions/streetFrontage.js"></script>
+    <script src="js/interventions/publicSpace.js"></script>
+    <script src="js/interventions/campusCorridor.js"></script>
+    <script src="js/metrics.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
