@@ -45,7 +45,7 @@ st.markdown("Explore the impacts and trade-offs of different transformation")
 st.markdown("We value all kinds of feedbacks!")
 st.markdown("---")
 
-tab1, tab2 = st.tabs(["Analysis", "Consensus Dashboard", "Feedback"])
+tab1, tab2, tab3 = st.tabs(["Analysis", "Consensus Dashboard", "Feedback"])
 
 with tab2:
     st.subheader("Consensus Dashboard")
