@@ -258,12 +258,12 @@ with right_col:
             st.subheader("Current State")
             
             if selected_intervention == "Mobility Management":
-                st.image("./assets/b0.png", caption="Current State", use_column_width=True)
+                st.image("./assets/b0.png", caption="Current State", use_container_width=True)
             
             else:  # Public Seating Management
                 seating_level = params_values.get("seating_level", 0)
                 plaza_level = params_values.get("plaza_level", 0)
-                st.image("./assets/s0-p0.png", caption="Current State", use_column_width=True)
+                st.image("./assets/s0-p0.png", caption="Current State", use_container_width=True)
         
         with col2:
             st.subheader(f"Transformation")
