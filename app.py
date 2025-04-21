@@ -10,8 +10,8 @@ from config import CATEGORICAL_LABELS, INTERVENTIONS, METRIC_DISPLAY_CONFIG, SIM
 st.set_page_config(page_title="Interventions Tool", page_icon="🏙️", layout="wide")
 
 # Header
-st.title("LIC IBZ Transformation Interventions Interactive Tool")
-st.markdown("Explore the impacts and trade-offs of different urban design strategies")
+st.title("LIC IBZ Interactive Tool")
+st.markdown("Explore the impacts and trade-offs of different transformation")
 st.markdown("---")
 
 left_col, right_col = st.columns([1, 2])
