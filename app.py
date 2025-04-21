@@ -274,40 +274,40 @@ with right_col:
                 bike_share_level = params_values.get("bike_share_level", 0)
 
                 if bike_lane_level == 0 and bike_share_level== 0:
-                    st.image("./assets/b0.png", caption="No dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_column_width=True)
+                    st.image("./assets/b0.png", caption="No dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_container_width=True)
                 elif bike_lane_level == 0 and bike_share_level== 1:
-                    st.image("./assets/b0.png", caption="No dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_column_width=True)
+                    st.image("./assets/b0.png", caption="No dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_container_width=True)
                 elif bike_lane_level == 0 and bike_share_level== 1:
-                    st.image("./assets/b1.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_column_width=True)
+                    st.image("./assets/b1.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_container_width=True)
                 elif bike_lane_level == 2 and bike_share_level== 1:
-                    st.image("./assets/b2_s1.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_column_width=True)
+                    st.image("./assets/b2_s1.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_container_width=True)
                 elif bike_lane_level == 2 and bike_share_level== 2:
-                    st.image("./assets/b2_s2.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_column_width=True)
+                    st.image("./assets/b2_s2.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_container_width=True)
                 else:
-                    st.image("./assets/b1.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_column_width=True)
+                    st.image("./assets/b1.png", caption="Transformed State with dedicated Bike Lanes, Minimal Bike-sharing Capacity", use_container_widthuse_container_width=True)
             
             else:  # Public Seating Management
                 seating_level = params_values.get("seating_level", 0)
                 plaza_level = params_values.get("plaza_level", 0)
 
                 if seating_level == 0 and plaza_level== 0:
-                    st.image("./assets/s0-p0.png", caption="No Seating Added, No Plaza Added", use_column_width=True)
+                    st.image("./assets/s0-p0.png", caption="No Seating Added, No Plaza Added", use_container_width=True)
                 elif seating_level == 0 and plaza_level== 1:
-                    st.image("./assets/s0-p1.png", caption="No Seating Added, Minimal Plaza Added", use_column_width=True)
+                    st.image("./assets/s0-p1.png", caption="No Seating Added, Minimal Plaza Added", use_container_width=True)
                 elif seating_level == 0 and plaza_level== 2:
-                    st.image("./assets/s0-p2.png", caption="No Seating Added, Extensive Plaza Added", use_column_width=True)
+                    st.image("./assets/s0-p2.png", caption="No Seating Added, Extensive Plaza Added", use_container_width=True)
                 elif seating_level == 1 and plaza_level== 0:
-                    st.image("./assets/s1-p0.png", caption="Minimal Seating Added, No Plaza Added", use_column_width=True)
+                    st.image("./assets/s1-p0.png", caption="Minimal Seating Added, No Plaza Added", use_container_width=True)
                 elif seating_level == 1 and plaza_level== 1:
-                    st.image("./assets/s1-p1.png", caption="Minimal Seating Added, Minimal Plaza Added", use_column_width=True)
+                    st.image("./assets/s1-p1.png", caption="Minimal Seating Added, Minimal Plaza Added", use_container_width=True)
                 elif seating_level == 1 and plaza_level== 2:
-                    st.image("./assets/s1-p2.png", caption="Minimal Seating Added, Extensive Plaza Added", use_column_width=True)
+                    st.image("./assets/s1-p2.png", caption="Minimal Seating Added, Extensive Plaza Added", use_container_width=True)
                 elif seating_level == 2 and plaza_level== 0:
-                    st.image("./assets/s2-p0.png", caption="Extensive Seating Added, No Plaza Added", use_column_width=True)
+                    st.image("./assets/s2-p0.png", caption="Extensive Seating Added, No Plaza Added", use_container_width=True)
                 elif seating_level == 2 and plaza_level== 1:
-                    st.image("./assets/s2-p1.png", caption="Extensive Seating Added, Minimal Plaza Added", use_column_width=True)
+                    st.image("./assets/s2-p1.png", caption="Extensive Seating Added, Minimal Plaza Added", use_container_width=True)
                 elif seating_level == 2 and plaza_level== 2:
-                    st.image("./assets/s2-p2.png", caption="Extensive Seating Added, Extensive Plaza Added", use_column_width=True)
+                    st.image("./assets/s2-p2.png", caption="Extensive Seating Added, Extensive Plaza Added", use_container_width=True)
     
     with tab2:
         st.subheader("Trade-offs")
