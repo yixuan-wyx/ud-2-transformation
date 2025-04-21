@@ -9,10 +9,125 @@ from config import CATEGORICAL_LABELS, INTERVENTIONS, METRIC_DISPLAY_CONFIG, SIM
 # Setup page
 st.set_page_config(page_title="Interventions Tool", page_icon="🏙️", layout="wide")
 
+# Add to the top of your app
+st.sidebar.title("Stakeholder Perspective")
+stakeholder_type = st.sidebar.selectbox(
+    "Select Your Perspective",
+    ["General", 
+     "Resident", 
+     "Business Owner", 
+     "LICP Official", 
+     "Municipal Department", 
+     "Investor", 
+     "Arts Organization"]
+)
+
+# Show stakeholder-specific information
+st.sidebar.markdown(f"### {stakeholder_type} View")
+if stakeholder_type == "Business Owner":
+    st.sidebar.markdown("You're viewing this tool as a **Business Owner**. The metrics and considerations shown will emphasize foot traffic, revenue potential, and visibility impacts.")
+elif stakeholder_type == "Resident":
+    st.sidebar.markdown("You're viewing this tool as a **Resident**. The metrics and considerations shown will emphasize community character, amenities, and livability.")
+elif stakeholder_type == "Business Owner":
+    st.sidebar.markdown("You're viewing this tool as a **Resident**. The metrics and considerations shown will emphasize community character, amenities, and livability.")
+elif stakeholder_type == "LICP Official":
+    st.sidebar.markdown("You're viewing this tool as a **Resident**. The metrics and considerations shown will emphasize community character, amenities, and livability.")
+elif stakeholder_type == "Investor":
+    st.sidebar.markdown("You're viewing this tool as a **Resident**. The metrics and considerations shown will emphasize community character, amenities, and livability.")
+elif stakeholder_type == "Arts Organization":
+    st.sidebar.markdown("You're viewing this tool as a **Resident**. The metrics and considerations shown will emphasize community character, amenities, and livability.")
+
+
+
 # Header
-st.title("LIC IBZ Interactive Tool")
+st.title("LIC Consensus - Interactive Tool")
 st.markdown("Explore the impacts and trade-offs of different transformation")
+st.markdown("We value all kinds of feedbacks!")
 st.markdown("---")
+
+tab1, tab2 = st.tabs(["Analysis", "Consensus Dashboard", "Feedback"])
+
+with tab2:
+    st.subheader("Consensus Dashboard")
+    st.markdown("See where different stakeholders align on intervention options")
+    
+    # Create dummy consensus data
+    consensus_data = {
+        "Public Seating - Minimal": {
+            "Residents": 78,
+            "Business Owners": 65,
+            "LICP Officials": 82,
+            "Municipal Departments": 70,
+            "Investors": 55,
+            "Arts Organizations": 90
+        },
+        "Public Seating - Extensive": {
+            "Residents": 85,
+            "Business Owners": 60,
+            "LICP Officials": 75,
+            "Municipal Departments": 65,
+            "Investors": 50,
+            "Arts Organizations": 95
+        },
+        "Public Plaza - Minimal": {
+            "Residents": 72,
+            "Business Owners": 80,
+            "LICP Officials": 78,
+            "Municipal Departments": 75,
+            "Investors": 70,
+            "Arts Organizations": 85
+        },
+        "Public Plaza - Extensive": {
+            "Residents": 80,
+            "Business Owners": 75,
+            "LICP Officials": 70,
+            "Municipal Departments": 60,
+            "Investors": 65,
+            "Arts Organizations": 90
+        }
+    }
+    
+    # Visualize consensus with a heatmap
+    interventions = list(consensus_data.keys())
+    stakeholders = list(consensus_data[interventions[0]].keys())
+    
+    data = []
+    for intervention in interventions:
+        for stakeholder in stakeholders:
+            data.append({
+                "Intervention": intervention,
+                "Stakeholder": stakeholder,
+                "Support Level": consensus_data[intervention][stakeholder]
+            })
+    
+    df_consensus = pd.DataFrame(data)
+    
+    # Create heatmap
+    fig = px.imshow(
+        df_consensus.pivot(index="Intervention", columns="Stakeholder", values="Support Level"),
+        labels=dict(x="Stakeholder", y="Intervention", color="Support Level"),
+        x=stakeholders,
+        y=interventions,
+        color_continuous_scale="RdYlGn",
+        zmin=0, zmax=100
+    )
+    
+    fig.update_layout(
+        margin=dict(l=50, r=50, t=30, b=50),
+        height=400
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Add consensus analysis text
+    st.subheader("Consensus Analysis")
+    st.markdown("**Areas of Strong Agreement:**")
+    st.markdown("• All stakeholders show support for minimal public plaza implementation")
+    st.markdown("• Residents and Arts Organizations strongly favor extensive seating")
+    
+    st.markdown("**Areas of Divergence:**")
+    st.markdown("• Investors show lower support for extensive public seating")
+    st.markdown("• Municipal Departments have concerns about extensive plaza implementations")
 
 left_col, right_col = st.columns([1, 2])
 
