@@ -328,7 +328,148 @@ with tab1:
                 
                 st.plotly_chart(fig_radar, use_container_width=True)
 
-
+with tab2:
+    st.header("Your Feedback")
+    st.markdown("Help shape the future of Long Island City by sharing your input on these interventions")
+    
+    # Stakeholder selection
+    stakeholder_type = st.selectbox(
+        "I am providing feedback as a:",
+        ["Resident", "Business Owner", "Community Organization", 
+         "LICP Official", "Municipal Department", "Investor", "Arts Organization", "Other"]
+    )
+    
+    # General intervention feedback
+    st.subheader("Intervention Feedback")
+    
+    # Create two columns for a cleaner layout
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Overall rating
+        st.slider("How would you rate this intervention overall?", 0, 10, 5)
+        
+        # Support level
+        support_level = st.radio("Would you support implementing this intervention?", 
+                               ["Strongly Support", "Support", "Neutral", "Oppose", "Strongly Oppose"])
+    
+    with col2:
+        # Most valued aspects
+        st.multiselect("What aspects do you value most about this intervention?", 
+                      ["Community Character", "Economic Benefits", "Sustainability", 
+                       "Accessibility", "Safety", "Visual Appeal", "Cultural Significance"])
+        
+        # Implementation preferences
+        st.multiselect("Which implementation features are most important?",
+                      ["Weather Protection", "Local Vendor Priority", "Cultural Elements",
+                       "Safety Features", "Accessibility", "Environmental Considerations"])
+    
+    # Priority ranking
+    st.subheader("Priority Ranking")
+    st.markdown("Rank the following priorities from most (1) to least (5) important:")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.number_input("Economic Development", 1, 5, 3)
+        st.number_input("Community Character", 1, 5, 3)
+        st.number_input("Pedestrian Experience", 1, 5, 3)
+    with col2:
+        st.number_input("Environmental Benefits", 1, 5, 3)
+        st.number_input("Cost Efficiency", 1, 5, 3)
+    
+    # Implementation suggestions and concerns
+    st.subheader("Additional Input")
+    
+    tab2_1, tab2_2 = st.tabs(["Suggestions", "Concerns"])
+    
+    with tab2_1:
+        st.text_area("Do you have specific suggestions for implementation?", 
+                    placeholder="Share your ideas for how this intervention could be improved or customized for LIC...",
+                    height=100)
+        
+        # Location preferences
+        st.subheader("Location Preferences")
+        st.markdown("Where do you think this intervention would be most effective? (Select up to 3)")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.checkbox("Near subway stations")
+            st.checkbox("Along commercial corridors")
+            st.checkbox("Near residential buildings")
+        with col2:
+            st.checkbox("Near existing public spaces")
+            st.checkbox("At neighborhood gateways")
+            st.checkbox("Under highway overpasses")
+    
+    with tab2_2:
+        st.text_area("Do you have any concerns about this intervention?", 
+                    placeholder="Share any concerns about potential negative impacts...",
+                    height=100)
+        
+        # Potential tradeoffs
+        st.subheader("Potential Tradeoffs")
+        st.markdown("Which potential tradeoffs concern you most? (Select all that apply)")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.checkbox("Increased maintenance costs")
+            st.checkbox("Potential congestion")
+            st.checkbox("Noise impacts")
+        with col2:
+            st.checkbox("Space constraints")
+            st.checkbox("Weather vulnerability")
+            st.checkbox("Equitable access")
+    
+    # Data visualization integration
+    st.subheader("Data Integration")
+    st.markdown("Help us better understand neighborhood patterns by sharing anonymous data:")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.selectbox("How often do you visit the LIC IBZ area?", 
+                    ["Daily", "A few times per week", "Weekly", "Monthly", "Rarely", "Never"])
+        
+        visit_purpose = st.multiselect("What brings you to the area? (Select all that apply)",
+                                     ["Work", "Shopping", "Dining", "Entertainment", "Art/Culture", 
+                                      "Recreation", "Passing through", "Resident"])
+    
+    with col2:
+        st.selectbox("How do you typically travel to the area?",
+                   ["Walk", "Subway", "Bus", "Bike", "Car", "Taxi/Rideshare", "Multiple modes"])
+        
+        st.selectbox("What times do you typically visit?",
+                   ["Morning (6AM-10AM)", "Midday (10AM-2PM)", "Afternoon (2PM-6PM)", 
+                    "Evening (6PM-10PM)", "Night (10PM-6AM)", "Varies"])
+    
+    # Future engagement
+    st.subheader("Future Engagement")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.checkbox("I would like to participate in future planning workshops")
+        st.checkbox("I would like to receive updates on LIC transformation projects")
+        
+    with col2:
+        st.checkbox("I would be interested in volunteering for pop-up events")
+        st.checkbox("I would like to provide feedback on future iterations")
+    
+    # Optional contact info
+    st.subheader("Optional Contact Information")
+    st.markdown("Your contact information will only be used for LIC BID planning purposes")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.text_input("Name (Optional)")
+        st.text_input("Email (Optional)")
+    
+    with col2:
+        st.text_input("Organization (if applicable)")
+        st.text_input("ZIP Code")
+    
+    # Submit button
+    submit_col1, submit_col2, submit_col3 = st.columns([1,1,1])
+    with submit_col2:
+        st.button("Submit Feedback", use_container_width=True)
 
 with tab3:
     st.subheader("Consensus Dashboard")
