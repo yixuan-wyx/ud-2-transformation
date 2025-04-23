@@ -123,13 +123,13 @@ INTERVENTIONS = {
                 "default": 0,
                 "description": "Level of market stalls: None, Minimal (1-2 stalls), Extensive (>=5 stalls)"
             },
-            "plaza_level": {
-                "label": "Plaza Implementation Level",
-                "min": 0,
-                "max": 2,
-                "default": 0,
-                "description": "Level of plaza creation: None, Minimal (1 plaza), Extensive (>=2 plazas)"
-            }
+            # "plaza_level": {
+            #     "label": "Plaza Implementation Level",
+            #     "min": 0,
+            #     "max": 2,
+            #     "default": 0,
+            #     "description": "Level of plaza creation: None, Minimal (1 plaza), Extensive (>=2 plazas)"
+            # }
         },
         "conflicts": [
             "Maintenance costs for market stalls and plazas need to be factored into long-term budgets",
@@ -141,26 +141,26 @@ INTERVENTIONS = {
         "description": "Enhance the urban environment with interactive art installations throughout the district",
         "parameters": {
             "bike_lane_level": {
-                "label": "Art Lane Implementation Level",
+                "label": "Pop-up Art Installation Implementation Level",
                 "min": 0,
                 "max": 2,
                 "default": 0,
                 "description": "Level of art lane coverage: None, Minimal (30%), Extensive (75%)"
             },
-            "bike_parking_level": {
-                "label": "Art Display Implementation Level",
-                "min": 0,
-                "max": 2,
-                "default": 0,
-                "description": "Level of art displays: None, Minimal (15 spots), Extensive (40 spots)"
-            },
-            "bike_share_level": {
-                "label": "Interactive Art Implementation Level",
-                "min": 0,
-                "max": 2,
-                "default": 1,
-                "description": "Level of interactive art: None, Minimal (2 installations), Extensive (6 installations)"
-            }
+            # "bike_parking_level": {
+            #     "label": "Art Display Implementation Level",
+            #     "min": 0,
+            #     "max": 2,
+            #     "default": 0,
+            #     "description": "Level of art displays: None, Minimal (15 spots), Extensive (40 spots)"
+            # },
+            # "bike_share_level": {
+            #     "label": "Interactive Art Implementation Level",
+            #     "min": 0,
+            #     "max": 2,
+            #     "default": 1,
+            #     "description": "Level of interactive art: None, Minimal (2 installations), Extensive (6 installations)"
+            # }
         },
         "conflicts": [
             "Art installations may temporarily reduce available space for pedestrians",
