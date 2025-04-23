@@ -515,12 +515,12 @@ with tab1:
                 st.subheader("Current State")
                 
                 if selected_intervention == "Pop-up Art Installation":
-                    st.image("./assets/b0.png", caption="Current State", use_column_width=True)
+                    st.image("./assets/b0.png", caption="Current State")
                 
                 else:  # Pop-up Market
                     seating_level = params_values.get("seating_level", 0)
                     plaza_level = params_values.get("plaza_level", 0)
-                    st.image("./assets/s0-p0.png", caption="Current State", use_column_width=True)
+                    st.image("./assets/s0-p0.png", caption="Current State")
             
             with col2:
                 st.subheader(f"Transformation")
@@ -531,40 +531,40 @@ with tab1:
                     bike_share_level = params_values.get("bike_share_level", 0)
 
                     if bike_lane_level == 0 and bike_share_level == 0:
-                        st.image("./assets/b0.png", caption="No Art Installation Added", use_column_width=True)
+                        st.image("./assets/b0.png", caption="No Art Installation Added")
                     elif bike_lane_level == 0 and bike_share_level == 1:
-                        st.image("./assets/b0.png", caption="No Art Installation, Minimal Bike-sharing", use_column_width=True)
+                        st.image("./assets/b0.png", caption="No Art Installation, Minimal Bike-sharing")
                     elif bike_lane_level == 1 and bike_share_level == 1:
-                        st.image("./assets/b1.png", caption="Minimal Art Installation with Bike-sharing Features", use_column_width=True)
+                        st.image("./assets/b1.png", caption="Minimal Art Installation with Bike-sharing Features")
                     elif bike_lane_level == 2 and bike_share_level == 1:
-                        st.image("./assets/b2_s1.png", caption="Extensive Art Installation, Minimal Bike-sharing Features", use_column_width=True)
+                        st.image("./assets/b2_s1.png", caption="Extensive Art Installation, Minimal Bike-sharing Features")
                     elif bike_lane_level == 2 and bike_share_level == 2:
-                        st.image("./assets/b2_s2.png", caption="Extensive Art Installation with Full Bike-sharing Features", use_column_width=True)
+                        st.image("./assets/b2_s2.png", caption="Extensive Art Installation with Full Bike-sharing Features")
                     else:
-                        st.image("./assets/b1.png", caption="Minimal Art Installation", use_column_width=True)
+                        st.image("./assets/b1.png", caption="Minimal Art Installation")
                 
                 else:  # Pop-up Market
                     seating_level = params_values.get("seating_level", 0)
                     plaza_level = params_values.get("plaza_level", 0)
 
                     if seating_level == 0 and plaza_level == 0:
-                        st.image("./assets/s0-p0.png", caption="No Market Setup, No Plaza Added", use_column_width=True)
+                        st.image("./assets/s0-p0.png", caption="No Market Setup, No Plaza Added")
                     elif seating_level == 0 and plaza_level == 1:
-                        st.image("./assets/s0-p1.png", caption="No Market Setup, Minimal Plaza Added", use_column_width=True)
+                        st.image("./assets/s0-p1.png", caption="No Market Setup, Minimal Plaza Added")
                     elif seating_level == 0 and plaza_level == 2:
-                        st.image("./assets/s0-p2.png", caption="No Market Setup, Extensive Plaza Added", use_column_width=True)
+                        st.image("./assets/s0-p2.png", caption="No Market Setup, Extensive Plaza Added")
                     elif seating_level == 1 and plaza_level == 0:
-                        st.image("./assets/s1-p0.png", caption="Minimal Market Setup, No Plaza Added", use_column_width=True)
+                        st.image("./assets/s1-p0.png", caption="Minimal Market Setup, No Plaza Added")
                     elif seating_level == 1 and plaza_level == 1:
-                        st.image("./assets/s1-p1.png", caption="Minimal Market Setup, Minimal Plaza Added", use_column_width=True)
+                        st.image("./assets/s1-p1.png", caption="Minimal Market Setup, Minimal Plaza Added")
                     elif seating_level == 1 and plaza_level == 2:
-                        st.image("./assets/s1-p2.png", caption="Minimal Market Setup, Extensive Plaza Added", use_column_width=True)
+                        st.image("./assets/s1-p2.png", caption="Minimal Market Setup, Extensive Plaza Added")
                     elif seating_level == 2 and plaza_level == 0:
-                        st.image("./assets/s2-p0.png", caption="Extensive Market Setup, No Plaza Added", use_column_width=True)
+                        st.image("./assets/s2-p0.png", caption="Extensive Market Setup, No Plaza Added")
                     elif seating_level == 2 and plaza_level == 1:
-                        st.image("./assets/s2-p1.png", caption="Extensive Market Setup, Minimal Plaza Added", use_column_width=True)
+                        st.image("./assets/s2-p1.png", caption="Extensive Market Setup, Minimal Plaza Added")
                     elif seating_level == 2 and plaza_level == 2:
-                        st.image("./assets/s2-p2.png", caption="Extensive Market Setup, Extensive Plaza Added", use_column_width=True)
+                        st.image("./assets/s2-p2.png", caption="Extensive Market Setup, Extensive Plaza Added")
         
         with viz_tab2:
             st.subheader("Trade-offs")
